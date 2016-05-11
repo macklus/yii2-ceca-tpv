@@ -1,0 +1,21 @@
+{
+    "name": "macklus/yii2-ceca-tpv",
+    "description": "Manage payment form generator from CECA TPV",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension"," tpv"," payment"," ceca"," ibercaja"],
+    "license": "GPL-3.0+",
+    "authors": [
+        {
+            "name": "José Pedro Andrés",
+            "email": "macklus@debianitas.net"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "macklus\\CECATpv\\": ""
+        }
+    }
+}
