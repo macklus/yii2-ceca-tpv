@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Widget;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
+use macklus\CECATpv\TpvResponse;
 
 /**
  * This is just an example.
@@ -20,6 +21,7 @@ class Tpv extends Widget
     public $developmentAction = 'http://tpv.ceca.es:8000/cgi-bin/tpv';
     public $view = false;
     public $encode = 'SHA1';
+    private $_response;
 
     public function init()
     {
@@ -42,6 +44,8 @@ class Tpv extends Widget
             $this->view = Yii::getAlias('@vendor/macklus/yii2-ceca-tpv/form.php');
         }
 
+        $this->_response = new TpvResponse();
+
         return parent::init();
     }
 
@@ -55,7 +59,7 @@ class Tpv extends Widget
         return $this->{$this->mode}[$key];
     }
 
-    public function generateForm($num_operacion, $importe, $tipomoneda = 978, $idioma = '1')
+    public function generateForm($num_operacion, $importe, $tipomoneda = 978, $idioma = '1', $showButton = true)
     {
         $importe *= 100;
 
@@ -76,7 +80,22 @@ class Tpv extends Widget
             'tipomoneda' => $tipomoneda,
             'idioma' => $idioma,
             'firma' => $firma,
+            'showButton' => $showButton
         ];
         return $this->renderFile($this->view, $params);
+    }
+
+    public function getTPVResponse()
+    {
+        $request = Yii::$app->request;
+        if ($request->isPost) {
+            $this->_response->raw = $request->bodyParams;
+            foreach (['MerchantID', 'AcquirerBIN', 'TerminalID', 'Num_operacion', 'Importe', 'TipoMoneda', 'Exponente', 'Referencia', 'Firma', 'Num_aut', 'BIN', 'FinalPAN', 'Cambio_moneda', 'Idioma', 'Descripcion', 'Pais', 'Tipo_tarjeta', 'Codigo_pedido', 'Codigo_cliente', 'Codigo_comercio', 'Caducidad', 'Idusuario'] as $var) {
+                $this->_response->{$var} = $request->getBodyParam($var);
+            }
+            $this->_response->validate();
+            return $this->_response;
+        }
+        return false;
     }
 }

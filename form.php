@@ -1,4 +1,4 @@
-<form action="<?= $action ?>" method="post" enctype="application/x-www-form-urlencoded">
+<form id="ceca-tpv-form" action="<?= $action ?>" method="post" enctype="application/x-www-form-urlencoded">
     <input name="AcquirerBIN" type=hidden value="<?= $AcquirerBIN ?>">
     <input name="MerchantID" type=hidden value="<?= $MerchantID ?>">
     <input name="TerminalID" type=hidden value="<?= $TerminalID ?>">
@@ -12,7 +12,9 @@
     <input name="TipoMoneda" type=hidden value="<?= $tipomoneda ?>">
     <input name="Idioma" type=hidden value="<?= $idioma ?>">
     <input name="Pago_soportado" type=hidden value="SSL">
-    <center>
-        <input type="submit" value="comprar">
-    </center>
+    <?php if ($showButton) { ?>
+        <center>
+            <input type="submit" value="comprar">
+        </center>
+    <?php } ?>
 </form>
