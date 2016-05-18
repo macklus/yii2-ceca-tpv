@@ -40,9 +40,9 @@ class TpvResponse extends Widget
 
     public function validate()
     {
-        //Clave_encriptacion+MerchantID+AcquirerBIN+TerminalID+Num_operacion+Importe+TipoMoneda+Exponente+Referencia
         $clave = Yii::$app->tpv->getConfig('Key') . $this->MerchantID . $this->AcquirerBIN . $this->TerminalID . $this->Num_operacion . $this->Importe .
                 $this->TipoMoneda . $this->Exponente . $this->Referencia;
+
         $firma = sha1($clave);
         $this->_Validated = true;
 
@@ -55,7 +55,7 @@ class TpvResponse extends Widget
 
     public function isValid()
     {
-        return ($this->_IsValid ? true : false);
+        return $this->_IsValid;
     }
 
     public function getKeyValue($key)
